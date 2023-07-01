@@ -1,0 +1,13 @@
+### Create user
+POST http://localhost:8080/test/create
+Content-Type: application/json
+
+{
+  "username": "new user",
+  "password": "password",
+  "telegramChatId": 1111
+}
+
+### Get user by subcrib query
+GET http://localhost:8080/test/users?subscribedTo=java
+Accept: application/json
