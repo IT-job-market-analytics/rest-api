@@ -1,8 +1,0 @@
-### Send POST request with json body
-POST http://localhost:8080/test/create-subscription
-Content-Type: application/json
-
-{
-  "userId": 1,
-  "query": "java"
-}
