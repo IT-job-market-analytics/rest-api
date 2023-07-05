@@ -20,6 +20,7 @@ public class AuthController {
     public ResponseEntity<ResponseStatus>  singUp(@Validated(OnCreate.class) @RequestBody UserCreateDto userCreateDto){
         log.debug("Receive userCreateDto:"+ userCreateDto);
         userService.createUser(userCreateDto);
+        log.debug("User created successfully");
         return ResponseEntity.ok().build();
     }
 }
