@@ -2,6 +2,7 @@ package com.example.restapi.services;
 
 import com.example.restapi.dto.UserCreateDto;
 import com.example.restapi.exceptions.ValueAlreadyExistsException;
+import com.example.restapi.mappers.UserMapper;
 import com.example.restapi.models.User;
 import com.example.restapi.repositories.UserRepository;
 import lombok.AllArgsConstructor;
@@ -16,12 +17,12 @@ import org.springframework.stereotype.Service;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
+    private final UserMapper userMapper;
     public void createUser(UserCreateDto userCreateDto) {
-        //TODO Will be used mapper
-        User user = new User();
-        user.setUsername(userCreateDto.getUsername());
+
+        User user = userMapper.toEntity(userCreateDto);
         user.setPassword(passwordEncoder.encode(userCreateDto.getPassword()));
+
         try {
             log.debug("Saving user: " + user);
             userRepository.save(user);
