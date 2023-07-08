@@ -1,6 +1,7 @@
 package com.example.restapi.services;
 
 import com.example.restapi.dto.UserCreateDto;
+import com.example.restapi.exceptions.ResourceNotFoundException;
 import com.example.restapi.exceptions.ValueAlreadyExistsException;
 import com.example.restapi.mappers.UserMapper;
 import com.example.restapi.models.User;
@@ -30,5 +31,10 @@ public class UserService {
             log.debug("User exist: " + user);
             throw new ValueAlreadyExistsException("Username already exists");
         }
+    }
+
+    public User getByUsername(String username){
+        return userRepository.findByUsername(username)
+                .orElseThrow(()->new ResourceNotFoundException("User not found"));
     }
 }
