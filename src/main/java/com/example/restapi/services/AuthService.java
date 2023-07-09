@@ -22,10 +22,12 @@ public class AuthService {
 
     public JwtResponse login(JwtRequest loginRequest) {
         JwtResponse jwtResponse = new JwtResponse();
+        User user = userService.getByUsername(loginRequest.getUsername());
+        System.out.println(user);
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
-        User user = userService.getByUsername(loginRequest.getUsername());
+
         jwtResponse.setId(user.getId());
         jwtResponse.setUsername(user.getUsername());
 

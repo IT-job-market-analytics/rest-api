@@ -13,7 +13,8 @@ import org.springframework.data.relational.core.conversion.DbActionExecutionExce
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -22,23 +23,28 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
+
     public void createUser(UserCreateDto userCreateDto) {
-
-        User user = userMapper.toEntity(userCreateDto);
-        user.setPassword(passwordEncoder.encode(userCreateDto.getPassword()));
-        user.setRoles(Collections.singleton(Role.ROLE_USER));
-
         try {
+
+            User user = userMapper.toEntity(userCreateDto);
+            user.setPassword(passwordEncoder.encode(userCreateDto.getPassword()));
+
+            Set<Role> roles = new HashSet<>();
+            roles.add(Role.ROLE_USER);
+            //user.setRoles(roles);
+
             log.debug("Saving user: " + user);
             userRepository.save(user);
+
         } catch (DbActionExecutionException e) {
-            log.debug("User exist: " + user);
+            log.debug("User exist");
             throw new ValueAlreadyExistsException("Username already exists");
         }
     }
 
-    public User getByUsername(String username){
+    public User getByUsername(String username) {
         return userRepository.findByUsername(username)
-                .orElseThrow(()->new ResourceNotFoundException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 }
