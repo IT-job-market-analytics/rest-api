@@ -2,15 +2,12 @@ package com.example.restapi.services;
 
 import com.example.restapi.dto.auth.JwtRequest;
 import com.example.restapi.dto.auth.JwtResponse;
-import com.example.restapi.models.Role;
 import com.example.restapi.models.User;
 import com.example.restapi.security.JwtTokenProvider;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
 
 @Service
 @AllArgsConstructor
@@ -29,8 +26,7 @@ public class AuthService {
         jwtResponse.setId(user.getId());
         jwtResponse.setUsername(user.getUsername());
 
-        //TODO передать рольAuthentication
-        jwtResponse.setAccessToken(jwtTokenProvider.createAccessToken(user.getId(), user.getUsername(), Collections.singleton(Role.ROLE_USER)));
+        jwtResponse.setAccessToken(jwtTokenProvider.createAccessToken(user.getId(), user.getUsername()));
         jwtResponse.setRefreshToken(jwtTokenProvider.createRefreshToken(user.getId(), user.getUsername()));
 
         return jwtResponse;

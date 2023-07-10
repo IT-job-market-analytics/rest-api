@@ -4,7 +4,6 @@ import com.example.restapi.dto.UserCreateDto;
 import com.example.restapi.exceptions.ResourceNotFoundException;
 import com.example.restapi.exceptions.ValueAlreadyExistsException;
 import com.example.restapi.mappers.UserMapper;
-import com.example.restapi.models.Role;
 import com.example.restapi.models.User;
 import com.example.restapi.repositories.UserRepository;
 import lombok.AllArgsConstructor;
@@ -12,9 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.relational.core.conversion.DbActionExecutionException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -29,10 +25,6 @@ public class UserService {
 
             User user = userMapper.toEntity(userCreateDto);
             user.setPassword(passwordEncoder.encode(userCreateDto.getPassword()));
-
-            Set<Role> roles = new HashSet<>();
-            roles.add(Role.ROLE_USER);
-            //user.setRoles(roles);
 
             log.debug("Saving user: " + user);
             userRepository.save(user);
