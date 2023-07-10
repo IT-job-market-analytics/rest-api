@@ -6,6 +6,7 @@ import com.example.restapi.dto.auth.JwtResponse;
 import com.example.restapi.dto.validation.OnCreate;
 import com.example.restapi.services.AuthService;
 import com.example.restapi.services.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 @AllArgsConstructor
 @Slf4j
+@Tag(name = "Auth Controller", description = "registration and login endpoint")
 public class AuthController {
 
     private final UserService userService;

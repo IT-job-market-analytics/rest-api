@@ -19,6 +19,7 @@
 		<hibernate.validation.version>8.0.0.Final</hibernate.validation.version>
 		<modelmapper.version>2.3.0</modelmapper.version>
 		<jjwt.version>0.11.5</jjwt.version>
+		<swagger.version>2.0.0</swagger.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -88,6 +89,11 @@
 			<artifactId>jjwt-jackson</artifactId>
 			<version>${jjwt.version}</version>
 			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>${swagger.version}</version>
 		</dependency>
 	</dependencies>
 
