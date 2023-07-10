@@ -1,7 +1,6 @@
 package com.example.restapi.models;
 
 import lombok.Data;
-import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
@@ -19,6 +18,6 @@ public class User {
     private String password;
 
     @Column("telegram_chat_id")
-    private int telegramChatId;
+    private Integer telegramChatId;
 
 }

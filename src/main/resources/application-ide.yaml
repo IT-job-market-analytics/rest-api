@@ -3,3 +3,7 @@ spring:
     url: "jdbc:mysql://localhost:3306/analytics_db"
     username: analytics_service
     password: password
+
+logging:
+  level:
+    com.example.restapi: debug
