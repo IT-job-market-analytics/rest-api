@@ -1,6 +1,7 @@
 package com.example.restapi.controllers;
 
 import com.example.restapi.exceptions.ErrorResponse;
+import com.example.restapi.exceptions.ResourceNotFoundException;
 import com.example.restapi.exceptions.ValueAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -27,4 +28,9 @@ public class ControllerAdvice {
                 .orElse(new ErrorResponse("Validation failed"));
     }
 
+    @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleResourceNotFound(ResourceNotFoundException e) {
+        return new ErrorResponse(e.getMessage());
+    }
 }

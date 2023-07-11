@@ -19,5 +19,4 @@ public class User {
 
     @Column("telegram_chat_id")
     private Integer telegramChatId;
-
 }
