@@ -1,6 +1,7 @@
 package com.example.restapi.mappers;
 
-import com.example.restapi.dto.UserCreateDto;
+import com.example.restapi.dto.user.GetUserDto;
+import com.example.restapi.dto.user.UserCreateDto;
 import com.example.restapi.models.User;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -24,5 +25,9 @@ public class UserMapper {
 
     public User toEntity(UserCreateDto userCreateDto){
         return modelMapper.map(userCreateDto, User.class);
+    }
+
+    public GetUserDto toGetUserDto(User  user){
+        return modelMapper.map(user, GetUserDto.class);
     }
 }

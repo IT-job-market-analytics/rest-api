@@ -18,5 +18,5 @@ public class User {
     private String password;
 
     @Column("telegram_chat_id")
-    private Integer telegramChatId;
+    private Long telegramChatId;
 }

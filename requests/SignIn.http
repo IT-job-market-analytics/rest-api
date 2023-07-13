@@ -7,11 +7,3 @@ Content-Type: application/json
   "password": "123456"
 }
 > {% client.global.set("auth_token", response.body.accessToken); %}
-
-
-
-
-### test method
-GET http://localhost:8080/test
-Content-Type: application/json
-Authorization: Bearer {{auth_token}}

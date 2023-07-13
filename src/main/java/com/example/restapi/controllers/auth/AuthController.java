@@ -1,6 +1,6 @@
 package com.example.restapi.controllers.auth;
 
-import com.example.restapi.dto.UserCreateDto;
+import com.example.restapi.dto.user.UserCreateDto;
 import com.example.restapi.dto.auth.JwtRequest;
 import com.example.restapi.dto.auth.JwtResponse;
 import com.example.restapi.dto.validation.OnCreate;

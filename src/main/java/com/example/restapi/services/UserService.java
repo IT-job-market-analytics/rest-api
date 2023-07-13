@@ -1,6 +1,8 @@
 package com.example.restapi.services;
 
-import com.example.restapi.dto.UserCreateDto;
+import com.example.restapi.dto.user.EditUserDto;
+import com.example.restapi.dto.user.GetUserDto;
+import com.example.restapi.dto.user.UserCreateDto;
 import com.example.restapi.exceptions.ResourceNotFoundException;
 import com.example.restapi.exceptions.ValueAlreadyExistsException;
 import com.example.restapi.mappers.UserMapper;
@@ -38,5 +40,19 @@ public class UserService {
     public User getByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    }
+
+    public GetUserDto getUserByUsername(String username) {
+        return userMapper.toGetUserDto(userRepository.findByUsername(username)
+                .orElseThrow(()->new ResourceNotFoundException("User not found")));
+    }
+
+    public GetUserDto update(EditUserDto editUserDto, String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(()->new ResourceNotFoundException("User not found"));
+
+        user.setTelegramChatId(editUserDto.getTelegramChatId());
+
+        return userMapper.toGetUserDto(userRepository.save(user));
     }
 }
