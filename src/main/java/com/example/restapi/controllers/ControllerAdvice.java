@@ -1,6 +1,7 @@
 package com.example.restapi.controllers;
 
 import com.example.restapi.exceptions.ErrorResponse;
+import com.example.restapi.exceptions.QueryNotFoundExceptions;
 import com.example.restapi.exceptions.ResourceNotFoundException;
 import com.example.restapi.exceptions.ValueAlreadyExistsException;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,12 @@ public class ControllerAdvice {
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleResourceNotFound(ResourceNotFoundException e) {
+        return new ErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler(QueryNotFoundExceptions.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleQueryNotFound(QueryNotFoundExceptions e) {
         return new ErrorResponse(e.getMessage());
     }
 }

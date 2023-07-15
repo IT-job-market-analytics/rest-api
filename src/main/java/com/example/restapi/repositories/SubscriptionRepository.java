@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface SubscriptionRepository extends CrudRepository<Subscription, Integer> {
-    Optional<Subscription> findByUserId(int userId);
+    Optional<Subscription> findSubscriptionByUserIdAndQuery(int userId, String query);
     List<Subscription> findAllByUserId(int userId);
 }

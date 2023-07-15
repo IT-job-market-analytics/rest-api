@@ -2,13 +2,16 @@ package com.example.restapi.services;
 
 import com.example.restapi.config.AllAvailableQueries;
 import com.example.restapi.dto.subscription.SubscriptionDto;
+import com.example.restapi.exceptions.QueryNotFoundExceptions;
 import com.example.restapi.exceptions.ResourceNotFoundException;
 import com.example.restapi.mappers.SubscriptionsMapper;
+import com.example.restapi.models.Subscription;
 import com.example.restapi.models.User;
 import com.example.restapi.repositories.SubscriptionRepository;
 import com.example.restapi.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -31,7 +34,48 @@ public class SubscriptionsService {
     }
 
     public List<SubscriptionDto> getAllAvailableSubscriptions() {
-
         return allAvailableQueries.allAvailable();
     }
+
+    @Transactional
+    public List<SubscriptionDto> addSubscription(String username, String query) {
+        checkAllAvailableQueries(query);
+        int userId = getUser(username);
+
+        subscriptionRepository.save(
+                Subscription.builder()
+                        .userId(userId)
+                        .query(query)
+                        .build()
+        );
+
+        return getSubscriptions(username);
+    }
+
+    public List<SubscriptionDto> removeSubscription(String username, String query) {
+        checkAllAvailableQueries(query);
+        int userId = getUser(username);
+
+        Subscription subscription = subscriptionRepository.findSubscriptionByUserIdAndQuery(userId, query)
+                .orElseThrow(() -> new ResourceNotFoundException("Subscription query does not exist "));
+        subscriptionRepository.delete(subscription);
+
+        return getSubscriptions(username);
+    }
+
+    private int getUser(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        return user.getId();
+    }
+
+    private void checkAllAvailableQueries(String query) {
+        allAvailableQueries.allAvailable().stream()
+                .map(SubscriptionDto::getQuery)
+                .filter(q -> q.equalsIgnoreCase(query))
+                .findFirst()
+                .orElseThrow(() -> new QueryNotFoundExceptions("Query not found"));
+    }
+
+
 }
