@@ -62,7 +62,7 @@ public class SubscriptionsService {
         int userId = getUser(username);
 
         Subscription subscription = subscriptionRepository.findSubscriptionByUserIdAndQuery(userId, query)
-                .orElseThrow(() -> new ResourceNotFoundException("Subscription query does not exist "));
+                .orElseThrow(() -> new ResourceNotFoundException("Subscription query does not exist"));
         subscriptionRepository.delete(subscription);
 
         return getSubscriptions(username);
@@ -79,7 +79,7 @@ public class SubscriptionsService {
                 .map(SubscriptionDto::getQuery)
                 .filter(q -> q.equalsIgnoreCase(query))
                 .findFirst()
-                .orElseThrow(() -> new QueryNotFoundExceptions("Query not found"));
+                .orElseThrow(() -> new QueryNotFoundExceptions("Non supported query"));
     }
 
 
