@@ -1,5 +1,6 @@
 package com.example.restapi.services;
 
+import com.example.restapi.config.AllAvailableQueries;
 import com.example.restapi.dto.subscription.SubscriptionDto;
 import com.example.restapi.exceptions.ResourceNotFoundException;
 import com.example.restapi.mappers.SubscriptionsMapper;
@@ -17,6 +18,7 @@ public class SubscriptionsService {
     private final UserRepository userRepository;
     private final SubscriptionRepository subscriptionRepository;
     private final SubscriptionsMapper subscriptionsMapper;
+    private final AllAvailableQueries allAvailableQueries;
 
     public List<SubscriptionDto> getSubscriptions(String username) {
         return subscriptionsMapper.toDtoList(
@@ -26,5 +28,10 @@ public class SubscriptionsService {
                         .map(subscriptionRepository::findAllByUserId)
                         .orElseThrow(() -> new ResourceNotFoundException("Subscriptions not found"))
         );
+    }
+
+    public List<SubscriptionDto> getAllAvailableSubscriptions() {
+
+        return allAvailableQueries.allAvailable();
     }
 }

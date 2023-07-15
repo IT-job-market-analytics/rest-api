@@ -21,4 +21,9 @@ public class SubscriptionController {
     public List<SubscriptionDto> getSubscriptions(Principal principal){
         return subscriptionsService.getSubscriptions(principal.getName());
     }
+
+    @GetMapping("/allAvailable")
+    public List<SubscriptionDto> getAllAvailableSubscriptions(){
+        return subscriptionsService.getAllAvailableSubscriptions();
+    }
 }

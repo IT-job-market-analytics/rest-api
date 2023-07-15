@@ -31,8 +31,7 @@ public class SubscriptionsMapper {
     }
 
     public List<SubscriptionDto> toDtoList(List<Subscription> subscriptions) {
-        Type listType = new TypeToken<List<SubscriptionDto>>() {
-        }.getType();
+        Type listType = new TypeToken<List<SubscriptionDto>>() {}.getType();
         return modelMapper.map(subscriptions, listType);
     }
 
