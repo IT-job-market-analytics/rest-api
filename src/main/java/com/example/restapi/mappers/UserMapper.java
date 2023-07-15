@@ -4,8 +4,12 @@ import com.example.restapi.dto.user.GetUserDto;
 import com.example.restapi.dto.user.UserCreateDto;
 import com.example.restapi.models.User;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Component;
+
+import java.lang.reflect.Type;
+import java.util.List;
 
 import static org.modelmapper.config.Configuration.AccessLevel.PRIVATE;
 
@@ -29,5 +33,10 @@ public class UserMapper {
 
     public GetUserDto toGetUserDto(User  user){
         return modelMapper.map(user, GetUserDto.class);
+    }
+
+    public List<GetUserDto> toGetUserDto(List<User>  user){
+        Type listType = new TypeToken<List<GetUserDto>>() {}.getType();
+        return modelMapper.map(user, listType);
     }
 }

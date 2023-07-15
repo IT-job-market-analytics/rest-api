@@ -15,4 +15,5 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 
     @Query("SELECT * FROM Users u INNER JOIN Subscriptions s ON u.id = s.user_id WHERE s.query = :query")
     List<User> findByQuery(@Param("query") String query);
+
 }

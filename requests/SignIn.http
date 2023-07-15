@@ -3,7 +3,7 @@ POST http://localhost:8080/auth/signin
 Content-Type: application/json
 
 {
-  "username": "newUser1",
+  "username": "newUser2",
   "password": "123456"
 }
 > {% client.global.set("auth_token", response.body.accessToken); %}

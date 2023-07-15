@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,5 +37,10 @@ public class UserController {
                 userService.update(editUserDto, principal.getName()),
                 HttpStatus.OK
         );
+    }
+
+    @GetMapping("/byQuery/{query}")
+    public List<GetUserDto> getUsersByQuery(@PathVariable String query){
+        return userService.getUsersByQuery(query);
     }
 }
