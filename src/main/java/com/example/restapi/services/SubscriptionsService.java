@@ -4,12 +4,14 @@ import com.example.restapi.config.AllAvailableQueries;
 import com.example.restapi.dto.subscription.SubscriptionDto;
 import com.example.restapi.exceptions.QueryNotFoundExceptions;
 import com.example.restapi.exceptions.ResourceNotFoundException;
+import com.example.restapi.exceptions.ValueAlreadyExistsException;
 import com.example.restapi.mappers.SubscriptionsMapper;
 import com.example.restapi.models.Subscription;
 import com.example.restapi.models.User;
 import com.example.restapi.repositories.SubscriptionRepository;
 import com.example.restapi.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.relational.core.conversion.DbActionExecutionException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,13 +44,16 @@ public class SubscriptionsService {
         checkAllAvailableQueries(query);
         int userId = getUser(username);
 
-        subscriptionRepository.save(
-                Subscription.builder()
-                        .userId(userId)
-                        .query(query)
-                        .build()
-        );
-
+        try {
+            subscriptionRepository.save(
+                    Subscription.builder()
+                            .userId(userId)
+                            .query(query)
+                            .build()
+            );
+        }catch (DbActionExecutionException e){
+            throw new ValueAlreadyExistsException("User already subscribed to this query");
+        }
         return getSubscriptions(username);
     }
 
