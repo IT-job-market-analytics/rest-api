@@ -1,12 +1,12 @@
 available:
   queries:
-    Java
-    Kotlin
-    Android
-    JavaScript
-    React
-    PHP
-    Laravel
+    - Java
+    - Kotlin
+    - Android
+    - JavaScript
+    - React
+    - PHP
+    - Laravel
 
 spring:
   datasource:
