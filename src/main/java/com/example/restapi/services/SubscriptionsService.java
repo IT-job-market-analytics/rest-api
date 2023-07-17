@@ -62,7 +62,7 @@ public class SubscriptionsService {
         int userId = getUser(username);
 
         Subscription subscription = subscriptionRepository.findSubscriptionByUserIdAndQuery(userId, query)
-                .orElseThrow(() -> new ResourceNotFoundException("Subscription query does not exist "));
+                .orElseThrow(() -> new ResourceNotFoundException("Subscription query does not exist"));
         subscriptionRepository.delete(subscription);
 
         return getSubscriptions(username);
