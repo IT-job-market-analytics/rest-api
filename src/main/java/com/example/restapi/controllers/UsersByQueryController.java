@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/users/byQuery")
 @RequiredArgsConstructor
-public class PublicController {
+public class UsersByQueryController {
     private final UserService userService;
 
-    @GetMapping("/users/byQuery/{query}")
+    @GetMapping("/{query}")
     public List<GetUserDto> getUsersByQuery(@PathVariable String query){
         return userService.getUsersByQuery(query);
     }
