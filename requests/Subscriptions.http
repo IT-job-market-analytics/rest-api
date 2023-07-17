@@ -10,7 +10,7 @@ Authorization: Bearer {{auth_token}}
 
 
 ### add subscriptions query
-POST http://localhost:8080/subscriptions/android
+POST http://localhost:8080/subscriptions/java
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 

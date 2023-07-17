@@ -1,6 +1,8 @@
 package com.example.restapi.controllers;
 
 import com.example.restapi.dto.subscription.SubscriptionDto;
+import com.example.restapi.security.JwtEntity;
+import com.example.restapi.services.SecurityService;
 import com.example.restapi.services.SubscriptionsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +16,12 @@ import java.util.List;
 public class SubscriptionController {
 
     private final SubscriptionsService subscriptionsService;
+    private final SecurityService securityService;
 
     @GetMapping(value = {"", "/"})
     public List<SubscriptionDto> getSubscriptions(Principal principal) {
-        return subscriptionsService.getSubscriptions(principal.getName());
+        JwtEntity user = securityService.getUser(principal);
+        return subscriptionsService.getSubscriptions(user.getId());
     }
 
     @GetMapping("/allAvailable")
@@ -27,11 +31,13 @@ public class SubscriptionController {
 
     @PostMapping("/{query}")
     public List<SubscriptionDto> addSubscription(Principal principal, @PathVariable String query) {
-        return subscriptionsService.addSubscription(principal.getName(), query);
+        JwtEntity user = securityService.getUser(principal);
+        return subscriptionsService.addSubscription(user.getId(), query);
     }
 
     @DeleteMapping("/{query}")
     public List<SubscriptionDto> removeSubscription(Principal principal, @PathVariable String query) {
-        return subscriptionsService.removeSubscription(principal.getName(), query);
+        JwtEntity user = securityService.getUser(principal);
+        return subscriptionsService.removeSubscription(user.getId(), query);
     }
 }

@@ -25,10 +25,10 @@ public class SubscriptionsService {
     private final SubscriptionsMapper subscriptionsMapper;
     private final AvailableQueriesConfig availableQueriesConfig;
 
-    public List<SubscriptionDto> getSubscriptions(String username) {
+    public List<SubscriptionDto> getSubscriptions(int userId) {
         return subscriptionsMapper.toDtoList(
                 userRepository.
-                        findByUsername(username)
+                        findById(userId)
                         .map(User::getId)
                         .map(subscriptionRepository::findAllByUserId)
                         .orElseThrow(() -> new ResourceNotFoundException("Subscriptions not found"))
@@ -40,9 +40,8 @@ public class SubscriptionsService {
     }
 
     @Transactional
-    public List<SubscriptionDto> addSubscription(String username, String query) {
+    public List<SubscriptionDto> addSubscription(int userId, String query) {
         checkAllAvailableQueries(query);
-        int userId = getUser(username);
 
         try {
             subscriptionRepository.save(
@@ -54,25 +53,20 @@ public class SubscriptionsService {
         } catch (DbActionExecutionException e) {
             throw new ValueAlreadyExistsException("User already subscribed to this query");
         }
-        return getSubscriptions(username);
+        return getSubscriptions(userId);
     }
 
-    public List<SubscriptionDto> removeSubscription(String username, String query) {
+    public List<SubscriptionDto> removeSubscription(int userId, String query) {
         checkAllAvailableQueries(query);
-        int userId = getUser(username);
 
         Subscription subscription = subscriptionRepository.findSubscriptionByUserIdAndQuery(userId, query)
                 .orElseThrow(() -> new ResourceNotFoundException("Subscription query does not exist"));
         subscriptionRepository.delete(subscription);
 
-        return getSubscriptions(username);
+        return getSubscriptions(userId);
     }
 
-    private int getUser(String username) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        return user.getId();
-    }
+
 
     private void checkAllAvailableQueries(String query) {
         allAvailable().stream()

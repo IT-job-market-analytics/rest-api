@@ -42,17 +42,18 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
-    public GetUserDto getUserByUsername(String username) {
-        return userMapper.toGetUserDto(userRepository.findByUsername(username)
-                .orElseThrow(()->new ResourceNotFoundException("User not found")));
-    }
-
-    public GetUserDto update(EditUserDto editUserDto, String username) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(()->new ResourceNotFoundException("User not found"));
+    public GetUserDto update(EditUserDto editUserDto, int userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         user.setTelegramChatId(editUserDto.getTelegramChatId());
 
         return userMapper.toGetUserDto(userRepository.save(user));
+    }
+
+    public GetUserDto getById(int userId) {
+        return userMapper.toGetUserDto(userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"))
+        );
     }
 }
