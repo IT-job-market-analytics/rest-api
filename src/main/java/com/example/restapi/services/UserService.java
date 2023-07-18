@@ -3,6 +3,7 @@ package com.example.restapi.services;
 import com.example.restapi.dto.user.EditUserDto;
 import com.example.restapi.dto.user.GetUserDto;
 import com.example.restapi.dto.user.UserCreateDto;
+import com.example.restapi.exceptions.QueryNotFoundExceptions;
 import com.example.restapi.exceptions.ResourceNotFoundException;
 import com.example.restapi.exceptions.ValueAlreadyExistsException;
 import com.example.restapi.mappers.UserMapper;
@@ -13,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.relational.core.conversion.DbActionExecutionException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -55,5 +58,14 @@ public class UserService {
         return userMapper.toGetUserDto(userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"))
         );
+    }
+
+    public List<GetUserDto> getUsersByQuery(String query) {
+        List<User> users = userRepository.findByQuery(query);
+        if (users == null || users.isEmpty()) {
+            throw new QueryNotFoundExceptions("Users not found for query:" + query);
+        }
+
+        return userMapper.toGetUserDto(users);
     }
 }
