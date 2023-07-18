@@ -20,8 +20,8 @@ public class SubscriptionController {
 
     @GetMapping(value = {"", "/"})
     public List<SubscriptionDto> getSubscriptions(Principal principal) {
-        JwtEntity user = securityService.getUser(principal);
-        return subscriptionsService.getSubscriptions(user.getId());
+        JwtEntity jwtPrincipal = securityService.convertPrincipal(principal);
+        return subscriptionsService.getSubscriptions(jwtPrincipal.getId());
     }
 
     @GetMapping("/allAvailable")
@@ -31,13 +31,13 @@ public class SubscriptionController {
 
     @PostMapping("/{query}")
     public List<SubscriptionDto> addSubscription(Principal principal, @PathVariable String query) {
-        JwtEntity user = securityService.getUser(principal);
-        return subscriptionsService.addSubscription(user.getId(), query);
+        JwtEntity jwtPrincipal = securityService.convertPrincipal(principal);
+        return subscriptionsService.addSubscription(jwtPrincipal.getId(), query);
     }
 
     @DeleteMapping("/{query}")
     public List<SubscriptionDto> removeSubscription(Principal principal, @PathVariable String query) {
-        JwtEntity user = securityService.getUser(principal);
-        return subscriptionsService.removeSubscription(user.getId(), query);
+        JwtEntity jwtPrincipal = securityService.convertPrincipal(principal);
+        return subscriptionsService.removeSubscription(jwtPrincipal.getId(), query);
     }
 }

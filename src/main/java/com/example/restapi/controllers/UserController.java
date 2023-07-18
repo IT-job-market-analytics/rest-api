@@ -24,20 +24,20 @@ public class UserController {
 
     @GetMapping(value = {"/"})
     public ResponseEntity<GetUserDto> getUser(Principal principal) {
-        JwtEntity user = securityService.getUser(principal);
+        JwtEntity jwtPrincipal = securityService.convertPrincipal(principal);
 
         return new ResponseEntity<>(
-                userService.getById(user.getId()),
+                userService.getById(jwtPrincipal.getId()),
                 HttpStatus.OK
         );
     }
 
     @PostMapping(value = {"/"})
     public ResponseEntity<GetUserDto> updateUser(@Validated @RequestBody EditUserDto editUserDto, Principal principal) {
-        JwtEntity user = securityService.getUser(principal);
+        JwtEntity jwtPrincipal = securityService.convertPrincipal(principal);
 
         return new ResponseEntity<>(
-                userService.update(editUserDto, user.getId()),
+                userService.update(editUserDto, jwtPrincipal.getId()),
                 HttpStatus.OK
         );
     }

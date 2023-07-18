@@ -9,15 +9,11 @@ import java.security.Principal;
 
 @Service
 public class SecurityService {
-
-    public JwtEntity getUser(Principal principal) {
-        if (principal instanceof UsernamePasswordAuthenticationToken) {
-            UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) principal;
-            JwtEntity jwtEntity = (JwtEntity) authenticationToken.getPrincipal();
-
-            return jwtEntity;
+    public JwtEntity convertPrincipal(Principal principal) {
+        if (principal instanceof UsernamePasswordAuthenticationToken authenticationToken) {
+            return (JwtEntity) authenticationToken.getPrincipal();
         } else {
-            throw new ResourceNotFoundException("User not found");
+            throw new ResourceNotFoundException("Unknown principal type");
         }
     }
 }
