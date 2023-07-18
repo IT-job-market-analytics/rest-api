@@ -1,4 +1,4 @@
-package com.example.restapi.dto;
+package com.example.restapi.dto.user;
 
 import com.example.restapi.dto.validation.OnCreate;
 import com.example.restapi.dto.validation.OnUpdate;

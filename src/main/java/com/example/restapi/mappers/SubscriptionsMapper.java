@@ -1,8 +1,7 @@
 package com.example.restapi.mappers;
 
-import com.example.restapi.dto.user.GetUserDto;
-import com.example.restapi.dto.user.UserCreateDto;
-import com.example.restapi.models.User;
+import com.example.restapi.dto.subscription.SubscriptionDto;
+import com.example.restapi.models.Subscription;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.modelmapper.convention.MatchingStrategies;
@@ -14,10 +13,10 @@ import java.util.List;
 import static org.modelmapper.config.Configuration.AccessLevel.PRIVATE;
 
 @Component
-public class UserMapper {
+public class SubscriptionsMapper {
     private final ModelMapper modelMapper;
 
-    public UserMapper() {
+    public SubscriptionsMapper() {
         this.modelMapper = new ModelMapper();
 
         this.modelMapper.getConfiguration()
@@ -27,16 +26,13 @@ public class UserMapper {
                 .setFieldAccessLevel(PRIVATE);
     }
 
-    public User toEntity(UserCreateDto userCreateDto){
-        return modelMapper.map(userCreateDto, User.class);
+    public SubscriptionDto toDto(Subscription subscription) {
+        return modelMapper.map(subscription, SubscriptionDto.class);
     }
 
-    public GetUserDto toGetUserDto(User  user){
-        return modelMapper.map(user, GetUserDto.class);
+    public List<SubscriptionDto> toDtoList(List<Subscription> subscriptions) {
+        Type listType = new TypeToken<List<SubscriptionDto>>() {}.getType();
+        return modelMapper.map(subscriptions, listType);
     }
 
-    public List<GetUserDto> toGetUserDto(List<User>  user){
-        Type listType = new TypeToken<List<GetUserDto>>() {}.getType();
-        return modelMapper.map(user, listType);
-    }
 }
