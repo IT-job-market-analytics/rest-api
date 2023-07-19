@@ -5,6 +5,7 @@ import com.example.restapi.exceptions.QueryNotFoundExceptions;
 import com.example.restapi.exceptions.ResourceNotFoundException;
 import com.example.restapi.exceptions.ValueAlreadyExistsException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -39,5 +40,11 @@ public class ControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleQueryNotFound(QueryNotFoundExceptions e) {
         return new ErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleIncorrectDataType() {
+        return new ErrorResponse("Incorrect data type");
     }
 }
