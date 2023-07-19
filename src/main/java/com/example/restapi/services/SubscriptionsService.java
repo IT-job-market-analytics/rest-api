@@ -1,6 +1,6 @@
 package com.example.restapi.services;
 
-import com.example.restapi.config.AllAvailableQueries;
+import com.example.restapi.config.AvailableQueriesConfig;
 import com.example.restapi.dto.subscription.SubscriptionDto;
 import com.example.restapi.exceptions.QueryNotFoundExceptions;
 import com.example.restapi.exceptions.ResourceNotFoundException;
@@ -23,12 +23,12 @@ public class SubscriptionsService {
     private final UserRepository userRepository;
     private final SubscriptionRepository subscriptionRepository;
     private final SubscriptionsMapper subscriptionsMapper;
-    private final AllAvailableQueries allAvailableQueries;
+    private final AvailableQueriesConfig availableQueriesConfig;
 
-    public List<SubscriptionDto> getSubscriptions(String username) {
+    public List<SubscriptionDto> getSubscriptions(int userId) {
         return subscriptionsMapper.toDtoList(
                 userRepository.
-                        findByUsername(username)
+                        findById(userId)
                         .map(User::getId)
                         .map(subscriptionRepository::findAllByUserId)
                         .orElseThrow(() -> new ResourceNotFoundException("Subscriptions not found"))
@@ -36,13 +36,12 @@ public class SubscriptionsService {
     }
 
     public List<SubscriptionDto> getAllAvailableSubscriptions() {
-        return allAvailableQueries.allAvailable();
+        return allAvailable();
     }
 
     @Transactional
-    public List<SubscriptionDto> addSubscription(String username, String query) {
+    public List<SubscriptionDto> addSubscription(int userId, String query) {
         checkAllAvailableQueries(query);
-        int userId = getUser(username);
 
         try {
             subscriptionRepository.save(
@@ -51,36 +50,36 @@ public class SubscriptionsService {
                             .query(query)
                             .build()
             );
-        }catch (DbActionExecutionException e){
+        } catch (DbActionExecutionException e) {
             throw new ValueAlreadyExistsException("User already subscribed to this query");
         }
-        return getSubscriptions(username);
+        return getSubscriptions(userId);
     }
 
-    public List<SubscriptionDto> removeSubscription(String username, String query) {
+    public List<SubscriptionDto> removeSubscription(int userId, String query) {
         checkAllAvailableQueries(query);
-        int userId = getUser(username);
 
         Subscription subscription = subscriptionRepository.findSubscriptionByUserIdAndQuery(userId, query)
                 .orElseThrow(() -> new ResourceNotFoundException("Subscription query does not exist"));
         subscriptionRepository.delete(subscription);
 
-        return getSubscriptions(username);
+        return getSubscriptions(userId);
     }
 
-    private int getUser(String username) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        return user.getId();
-    }
+
 
     private void checkAllAvailableQueries(String query) {
-        allAvailableQueries.allAvailable().stream()
+        allAvailable().stream()
                 .map(SubscriptionDto::getQuery)
                 .filter(q -> q.equalsIgnoreCase(query))
                 .findFirst()
-                .orElseThrow(() -> new QueryNotFoundExceptions("Query not found"));
+                .orElseThrow(() -> new QueryNotFoundExceptions("Non supported query"));
     }
 
-
+    private List<SubscriptionDto> allAvailable() {
+        return availableQueriesConfig.getQueries().stream()
+                .map(String::trim)
+                .map(SubscriptionDto::new)
+                .toList();
+    }
 }
