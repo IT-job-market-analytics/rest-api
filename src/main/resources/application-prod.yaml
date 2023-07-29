@@ -1,5 +1,5 @@
 spring:
   datasource:
-    url: ${MYSQL_URL}
-    username: ${MYSQL_USERNAME}
+    url: "jdbc:mysql://analytics-db:3306/analytics_db"
+    username: analytics_service
     password: ${MYSQL_PASSWORD}
