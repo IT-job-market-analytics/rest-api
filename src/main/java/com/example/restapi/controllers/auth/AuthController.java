@@ -32,7 +32,7 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public JwtResponse login(@Validated @RequestBody JwtRequest loginRequest){
+    public JwtResponse login(@Validated @RequestBody JwtRequest loginRequest) {
         return authService.login(loginRequest);
     }
 }
