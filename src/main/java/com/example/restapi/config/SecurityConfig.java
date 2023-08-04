@@ -68,6 +68,9 @@ public class SecurityConfig {
                         .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers("/users/byQuery/**").permitAll()
                         .requestMatchers("/analytics/**").permitAll()
+
+                        //test
+                        .requestMatchers("/vacancy").permitAll()
                         .anyRequest().authenticated()
 
                 )
