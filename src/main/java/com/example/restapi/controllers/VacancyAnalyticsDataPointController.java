@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/vacancy")
+@RequestMapping("/test/vacancy")
 @Slf4j
 public class VacancyAnalyticsDataPointController {
     private final VacancyAnalyticsDataPointService vacancyAnalyticsDataPointService;
