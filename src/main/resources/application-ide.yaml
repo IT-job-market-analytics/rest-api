@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: "jdbc:mysql://localhost:3306/analytics_db"
+    url: "jdbc:mysql://217.25.88.12:3306/analytics_db"
     username: analytics_service
     password: password
 
