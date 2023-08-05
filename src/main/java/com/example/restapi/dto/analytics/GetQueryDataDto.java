@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class QueryHistory {
-    private String date;
+public class GetQueryDataDto {
+    private String query;
     private int vacancyCount;
-    private double averageSalary;
+    private double salary;
 }

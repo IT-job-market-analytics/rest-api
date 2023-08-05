@@ -1,29 +1,39 @@
 package com.example.restapi.services;
 
-import com.example.restapi.dto.analytics.QueryData;
-import com.example.restapi.dto.analytics.QueryHistory;
+import com.example.restapi.dto.analytics.GetQueryDataDto;
+import com.example.restapi.dto.analytics.GetQueryHistoryDto;
+import com.example.restapi.mappers.VacancyAnalyticsMapper;
+import com.example.restapi.repositories.VacancyAnalyticsDataPointRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AnalyticsService {
-    public List<QueryData> byQuery() {
 
-        List<QueryData> queryDataList = new ArrayList<>();
-        queryDataList.add(new QueryData("Java", 22, 100000.33));
-        queryDataList.add(new QueryData("Kotlin", 21, 99000.00));
+    private final VacancyAnalyticsDataPointRepository vacancyRepository;
+    private final VacancyAnalyticsMapper vacancyAnalyticsMapper;
 
-        return queryDataList;
+    public List<GetQueryDataDto> byQuery() {
+        return vacancyAnalyticsMapper.toQueryDataDto(
+                vacancyRepository.findVacancyAnalyticsDataPointByDate(LocalDate.now())
+        );
     }
 
-    public List<QueryHistory> historyQuery(String query, int depth) {
+    public List<GetQueryHistoryDto> historyQuery(String query, int depth) {
+        LocalDate endDate = LocalDate.now();
+        LocalDate startDate = endDate.minusDays(depth);
 
-        List<QueryHistory> queryHistoryList = new ArrayList<>();
-        queryHistoryList.add(new QueryHistory("01.01.2023", 31, 100000.33));
-        queryHistoryList.add(new QueryHistory("02.01.2023", 31, 99000.33));
-
-        return queryHistoryList;
+        return vacancyAnalyticsMapper.toQueryHistoryDto(
+                vacancyRepository.findVacancyAnalyticsDataPointByQueryAndDateBetween(
+                        query,
+                        startDate,
+                        endDate,
+                        Sort.by("date").ascending()
+                )
+        );
     }
 }
