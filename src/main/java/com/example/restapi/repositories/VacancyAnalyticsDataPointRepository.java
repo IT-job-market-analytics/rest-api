@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface VacancyAnalyticsDataPointRepository extends CrudRepository<VacancyAnalyticsDataPoint, Integer> {
@@ -18,4 +19,6 @@ public interface VacancyAnalyticsDataPointRepository extends CrudRepository<Vaca
             LocalDate dateEnd,
             Sort sort
     );
+
+    Optional<VacancyAnalyticsDataPoint> findFirstByOrderByDateDesc();
 }

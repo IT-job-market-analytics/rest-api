@@ -2,7 +2,9 @@ package com.example.restapi.services;
 
 import com.example.restapi.dto.analytics.GetQueryDataDto;
 import com.example.restapi.dto.analytics.GetQueryHistoryDto;
+import com.example.restapi.exceptions.ResourceNotFoundException;
 import com.example.restapi.mappers.VacancyAnalyticsMapper;
+import com.example.restapi.models.VacancyAnalyticsDataPoint;
 import com.example.restapi.repositories.VacancyAnalyticsDataPointRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -18,8 +20,13 @@ public class AnalyticsService {
     private final VacancyAnalyticsMapper vacancyAnalyticsMapper;
 
     public List<GetQueryDataDto> byQuery() {
+        LocalDate maxDate = vacancyRepository
+                .findFirstByOrderByDateDesc()
+                .map(VacancyAnalyticsDataPoint::getDate)
+                .orElseThrow(()->new ResourceNotFoundException("Vacancies not found"));
+
         return vacancyAnalyticsMapper.toQueryDataDto(
-                vacancyRepository.findVacancyAnalyticsDataPointByDate(LocalDate.now())
+                vacancyRepository.findVacancyAnalyticsDataPointByDate(maxDate)
         );
     }
 
@@ -32,7 +39,7 @@ public class AnalyticsService {
                         query,
                         startDate,
                         endDate,
-                        Sort.by("date").ascending()
+                        Sort.by("date").descending()
                 )
         );
     }
