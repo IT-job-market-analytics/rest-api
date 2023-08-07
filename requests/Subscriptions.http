@@ -6,7 +6,6 @@ Authorization: Bearer {{auth_token}}
 ### get all available subscriptions
 GET http://localhost:8080/subscriptions/allAvailable
 Content-Type: application/json
-Authorization: Bearer {{auth_token}}
 
 
 ### add subscriptions query
