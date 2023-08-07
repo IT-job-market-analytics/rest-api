@@ -3,10 +3,11 @@ available:
     - Java
     - Kotlin
     - Android
-    - JavaScript
+    - Javascript
     - React
     - PHP
-    - Laravel
+    - iOS
+    - .NET
 
 spring:
   datasource:
