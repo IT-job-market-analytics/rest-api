@@ -8,4 +8,4 @@ FROM eclipse-temurin:17-jre
 WORKDIR /
 COPY --from=build /target/*.jar rest-api.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "rest-api.jar"]
+ENTRYPOINT ["java", "--add-opens", "java.base/java.time=ALL-UNNAMED", "-jar", "rest-api.jar"]
