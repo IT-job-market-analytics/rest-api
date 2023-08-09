@@ -22,9 +22,7 @@ public class AnalyticsService {
     private final VacancyAnalyticsMapper vacancyAnalyticsMapper;
 
     public List<GetQueryDataDto> byQuery() {
-        Optional<LocalDate> maxDate = vacancyRepository
-                .findFirstByOrderByDateDesc()
-                .map(VacancyAnalyticsDataPoint::getDate);
+        Optional<LocalDate> maxDate = getMaxDate();
 
         if (maxDate.isEmpty()) {
             return Collections.emptyList();
@@ -35,8 +33,14 @@ public class AnalyticsService {
         );
     }
 
+    private Optional<LocalDate> getMaxDate() {
+        return vacancyRepository
+                .findFirstByOrderByDateDesc()
+                .map(VacancyAnalyticsDataPoint::getDate);
+    }
+
     public List<GetQueryHistoryDto> historyQuery(String query, int depth) {
-        LocalDate endDate = LocalDate.now();
+        LocalDate endDate = getMaxDate().orElse(LocalDate.now());
         LocalDate startDate = endDate.minusDays(depth);
 
         return vacancyAnalyticsMapper.toQueryHistoryDto(
@@ -44,7 +48,7 @@ public class AnalyticsService {
                         query,
                         startDate,
                         endDate,
-                        Sort.by("date").descending()
+                        Sort.by("date").ascending()
                 )
         );
     }
